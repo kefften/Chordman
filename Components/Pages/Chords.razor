@@ -1,0 +1,100 @@
+﻿@page "/chords"
+@using ChordMan.Business.Services
+@using ChordMan.Models
+@rendermode InteractiveServer
+@inject IChordService ChordService;
+s
+<PageTitle>Chords</PageTitle>
+
+<h1>Chords</h1>
+<p role="status">Current Key @_key Major</p>
+
+<div>
+    <div>
+        @foreach (var note in Enum.GetValues(typeof(ChromaticScale)).Cast<ChromaticScale>())
+        {
+            <button class="btn btn-primary" @onclick="() => SetKey(note)"> @note</button>
+        }
+    </div>
+    
+    <div>
+        <p>Secondary dominants</p>
+
+        @if (_secondaryDominantChords != null)
+        {
+            @foreach (var chord in _secondaryDominantChords)
+            {
+                <button class="btn @(chord.Available ? "btn-primary" : "btn-danger")" @onclick="() => GetAvailableChords(chord)">
+                    @chord.RootNote @chord.Quality @(chord.Extension != ChordExtension.None ? chord.Extension : string.Empty)
+                </button>
+            }
+
+        }
+
+
+    </div>
+    
+    <div>
+        <p>Main Chords</p>
+        @if (_mainChords != null)
+        {
+            @foreach (var chord in _mainChords)
+            {
+                <button class="btn @(chord.Available ? "btn-primary" : "btn-danger")" @onclick="() => GetAvailableChords(chord)">
+                    @chord.RootNote @chord.Quality @(chord.Extension != ChordExtension.None ? chord.Extension : string.Empty)
+                </button>
+            }
+
+        }
+
+    </div>
+   
+    <div>
+        <p>Modal change</p>
+        @if (_modalChangeChords != null)
+        {
+            @foreach (var chord in _modalChangeChords)
+            {
+                <button class="btn @(chord.Available ? "btn-primary" : "btn-danger")" @onclick="() => GetAvailableChords(chord)">
+                    @chord.RootNote @chord.Quality @(chord.Extension != ChordExtension.None ? chord.Extension : string.Empty)
+                </button>
+            }
+
+        }
+
+    </div>
+
+</div>
+
+@code {
+    private ChromaticScale _key;
+    private List<Chord>? _mainChords;
+    private List<Chord>? _modalChangeChords;
+    private List<Chord>? _secondaryDominantChords;
+
+
+    private void SetKey(ChromaticScale key)
+    {
+        _key = key;
+        GetChords();
+
+    }
+
+    private void GetAvailableChords(Chord chord)
+    {
+        var availableChords = ChordService.GetAvailableChords(chord, _key);
+        _mainChords = availableChords[ChordFunction.Main];
+        _secondaryDominantChords = availableChords[ChordFunction.SecondaryDominant];
+        _modalChangeChords = availableChords[ChordFunction.ModalChange];
+    }
+    
+    private void GetChords()
+    {
+        _mainChords = ChordService.GetMainChords(_key);
+        _modalChangeChords = ChordService.GetModalChangeChords(_key);
+        _secondaryDominantChords = ChordService.GetSecondaryDominants(_key);
+
+
+    }
+
+}

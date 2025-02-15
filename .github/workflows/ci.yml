@@ -3,7 +3,7 @@ name: Build and Deploy ASP.NET Project
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:

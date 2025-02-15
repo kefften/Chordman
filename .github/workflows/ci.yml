@@ -54,5 +54,4 @@ jobs:
         sudo apt-get install -y sshpass
 
         # Copy files to the remote server
-        sshpass -p $IIS_PASS scp -o StrictHostKeyChecking=no -r ./publish/* $IIS_USER@$SERVER_IP:$DEPLOY_DIR
-
+        sshpass -p $IIS_PASS scp -r ./publish/* $IIS_USER@$SERVER_IP:$DEPLOY_DIR

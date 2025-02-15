@@ -1,0 +1,58 @@
+name: Build and Deploy ASP.NET Project
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '6.x' # Adjust to your .NET version
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Publish
+      run: dotnet publish --configuration Release --output ./publish
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: aspnet-build
+        path: ./publish
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: serverdatan
+
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: aspnet-build
+        path: ./publish
+
+    - name: Deploy to IIS Server
+      env:
+        IIS_USER: ${{ secrets.IIS_USER }}
+        IIS_PASS: ${{ secrets.IIS_PASS }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
+      run: |
+        # Install sshpass if not already installed
+        sudo apt-get update
+        sudo apt-get install -y sshpass
+
+        # Copy files to the remote server
+        sshpass -p $IIS_PASS scp -o StrictHostKeyChecking=no -r ./publish/* $IIS_USER@$SERVER_IP:$DEPLOY_DIR
+

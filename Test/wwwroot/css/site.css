@@ -1,0 +1,106 @@
+﻿/* 🌟 General Layout */
+.layout-container {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(135deg, #1e1e2e 30%, #252540);
+    overflow: hidden;
+}
+
+/* 📌 Sidebar */
+.sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: rgba(255, 255, 255, 0.1); /* Glassmorphic effect */
+    backdrop-filter: blur(10px);
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* 🔥 Sidebar Hover Effect */
+.sidebar:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* 📜 Main Content */
+.main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ✨ Content Styling */
+.content {
+    max-width: 800px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    color: #f0f0f0;
+}
+
+/* 🚨 Error UI */
+#blazor-error-ui {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(255, 0, 0, 0.9);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* 🔄 Reload Button */
+#blazor-error-ui .reload {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 2px solid white;
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* ❌ Dismiss Button */
+#blazor-error-ui .dismiss {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+#blazor-error-ui .dismiss:hover {
+    transform: scale(1.2);
+}
+
+/* ✨ Smooth Animations */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        height: 100%;
+        z-index: 10;
+    }
+
+    .sidebar:hover {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        padding: 1rem;
+    }
+
+    .content {
+        padding: 1rem;
+    }
+}

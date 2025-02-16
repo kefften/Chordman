@@ -49,6 +49,7 @@ jobs:
         SERVER_IP: ${{ secrets.SERVER_IP }}
         DEPLOY_DIR: ${{ vars.DEPLOY_DIR }}
         IIS_SITE_NAME: ${{ vars.IIS_SITE_NAME }}
+        IIS_HOSTNAME: ${{ vars.IIS_HOSTNAME }}
 
       run: |
         # Install sshpass if not already installed
@@ -69,5 +70,13 @@ jobs:
             } else {
               New-Website -Name $IIS_SITE_NAME -PhysicalPath \\\"$DEPLOY_PATH\\\" -Port 80 -Force;
             }
+
+            # Remove existing bindings (to prevent duplicates)
+            Get-WebBinding -Name \$IIS_SITE_NAME | Remove-WebBinding;
+
+            # Add the binding for songperson.com
+            New-WebBinding -Name \$IIS_SITE_NAME -IPAddress * -Port 80 -HostHeader \$IIS_HOSTNAME;
+
+
             Start-Website -Name $IIS_SITE_NAME;
           \""

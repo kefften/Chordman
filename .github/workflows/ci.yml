@@ -59,3 +59,14 @@ jobs:
 
         # Copy files to the remote server
         sshpass -p $IIS_PASS scp -o StrictHostKeyChecking=no -r ./publish/* $IIS_USER@$SERVER_IP:$DEPLOY_PATH
+
+        # Configure IIS Site
+        sshpass -p $IIS_PASS ssh -o StrictHostKeyChecking=no $IIS_USER@$SERVER_IP "powershell -ExecutionPolicy Bypass -NoProfile -Command '
+          Import-Module WebAdministration;
+          if (Test-Path IIS:\Sites\$env:IIS_SITE_NAME) {
+            Stop-Website -Name $env:IIS_SITE_NAME;
+          } else {
+            New-Website -Name $env:IIS_SITE_NAME -PhysicalPath \"${env:DEPLOY_PATH}\" -Port 80 -Force;
+          }
+          Start-Website -Name $env:IIS_SITE_NAME;
+        '"

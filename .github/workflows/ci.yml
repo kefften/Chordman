@@ -64,10 +64,10 @@ jobs:
         sshpass -p $IIS_PASS ssh -o StrictHostKeyChecking=no $IIS_USER@$SERVER_IP "powershell -ExecutionPolicy Bypass -NoProfile -Command \"
             Import-Module WebAdministration;
             \$DEPLOY_PATH = \\\"$DEPLOY_PATH\\\";
-            if (Test-Path IIS:\\Sites\\$env:IIS_SITE_NAME) {
+            if (Test-Path IIS:\\Sites\\\$IIS_SITE_NAME) {
               Stop-Website -Name $env:IIS_SITE_NAME;
             } else {
-              New-Website -Name $env:IIS_SITE_NAME -PhysicalPath \\\"$DEPLOY_PATH\\\" -Port 80 -Force;
+              New-Website -Name $IIS_SITE_NAME -PhysicalPath \\\"$DEPLOY_PATH\\\" -Port 80 -Force;
             }
-            Start-Website -Name $env:IIS_SITE_NAME;
+            Start-Website -Name $IIS_SITE_NAME;
           \""

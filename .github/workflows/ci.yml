@@ -61,31 +61,15 @@ jobs:
         # Copy files to the remote server
         sshpass -p $IIS_PASS scp -o StrictHostKeyChecking=no -r ./publish/* $IIS_USER@$SERVER_IP:$DEPLOY_PATH
 
-        # Configure IIS Site and Bindings
+        # Configure IIS Site
         sshpass -p $IIS_PASS ssh -o StrictHostKeyChecking=no $IIS_USER@$SERVER_IP "powershell -ExecutionPolicy Bypass -NoProfile -Command \"
             Import-Module WebAdministration;
             \$DEPLOY_PATH = \\\"$DEPLOY_PATH\\\";
-            \$IIS_HOSTNAME = \\\"$IIS_HOSTNAME\\\";
-
             if (Test-Path IIS:\\Sites\\\$IIS_SITE_NAME) {
-              Stop-Website -Name \$IIS_SITE_NAME;
+              Stop-Website -Name $env:IIS_SITE_NAME;
             } else {
-              New-Website -Name \$IIS_SITE_NAME -PhysicalPath \\\"$DEPLOY_PATH\\\" -Port 80 -Force;
+              New-Website -Name $IIS_SITE_NAME -PhysicalPath \\\"$DEPLOY_PATH\\\" -Port 80 -Force;
             }
-
-            # Remove only existing bindings for IIS_HOSTNAME to prevent duplicates
-            \$existingBinding = Get-WebBinding -Name \$IIS_SITE_NAME | Where-Object { \$_.bindingInformation -like '*:80:\$IIS_HOSTNAME' };
-            if (\$existingBinding) {
-              Remove-WebBinding -Name \$IIS_SITE_NAME -IPAddress * -Port 80 -HostHeader \$IIS_HOSTNAME;
-            }
-
-            # Ensure at least one binding exists
-            if (-not (Get-WebBinding -Name \$IIS_SITE_NAME)) {
-              New-WebBinding -Name \$IIS_SITE_NAME -IPAddress * -Port 80;
-            }
-
-            # Add binding for hostname
-            New-WebBinding -Name \$IIS_SITE_NAME -IPAddress * -Port 80 -HostHeader \$IIS_HOSTNAME;
-
-            Start-Website -Name \$IIS_SITE_NAME;
+            
+            Start-Website -Name $IIS_SITE_NAME;
           \""

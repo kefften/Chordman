@@ -150,7 +150,7 @@ public class ChordService : IChordService
             .GetValues(typeof(ChromaticScale))
             .Cast<int>()
             .ToArray();
-        var qualityOrder = Orders.MajorQuality
+        var qualityOrder = Orders.MajorQualityOrder
             .ToList()
             .Select(x => (int)x)
             .ToArray();
@@ -163,7 +163,7 @@ public class ChordService : IChordService
         }
         
         chord.RootNote = (ChromaticScale)chromaticScale.GetWrappedIndex(moves);
-        chord.Quality = Orders.MajorQuality[qualityOrder.GetWrappedIndex(stepPosition)];
+        chord.Quality = Orders.MajorQualityOrder[qualityOrder.GetWrappedIndex(stepPosition)];
         chord.Interval = (ChordInterval)interval;
         chord.Available = true;
 

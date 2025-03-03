@@ -1,4 +1,6 @@
-﻿using ChordMan.Models;
+﻿using System.ComponentModel;
+using System.Reflection;
+using ChordMan.Models;
 
 namespace ChordMan.ExtensionMethods;
 
@@ -14,6 +16,13 @@ public static class DataExtensions
         return wrappedIndex;
     }
     
+
+    public static string GetDescription<T>(this T enumValue) where T : Enum
+    {
+        var field = typeof(T).GetField(enumValue.ToString());
+        var attribute = field?.GetCustomAttribute<DescriptionAttribute>();
+        return attribute?.Description ?? enumValue.ToString();
+    }
     
     public static int GetSteps(this int stepsToMove)
     {
@@ -23,8 +32,8 @@ public static class DataExtensions
         var steps = 0; 
         for (int i = 0; i < stepsToMove; i++)
         {
-            steps += Orders.StepOrder[
-                Orders.StepOrder.GetWrappedIndex(i)];
+            steps += Orders.MajorStepOrder[
+                Orders.MajorStepOrder.GetWrappedIndex(i)];
         }
         return steps;
     }

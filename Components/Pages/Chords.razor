@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using ChordMan.Business.Services
+@using ChordMan.ExtensionMethods
 @using ChordMan.Models
 @rendermode InteractiveServer
 @inject IChordService ChordService;
@@ -12,7 +13,7 @@
     <div>
         @foreach (var note in Enum.GetValues(typeof(ChromaticScale)).Cast<ChromaticScale>())
         {
-            <button class="btn btn-primary" @onclick="() => SetKey(note)"> @note</button>
+            <button class="btn btn-primary" @onclick="() => SetKey(note)"> @note.GetDescription()</button>
         }
     </div>
 	<div>
@@ -23,7 +24,7 @@
             @foreach (var chord in _secondaryDominantChords)
             {
                 <button class="btn @(chord.Available ? "btn-primary" : "btn-danger")" @onclick="() => GetAvailableChords(chord)">
-                    @chord.RootNote @chord.Quality @(chord.Extension != ChordExtension.None ? chord.Extension : string.Empty)
+                    @chord.RootNote.GetDescription()@chord.Quality.GetDescription()@chord.Extension.GetDescription()
                 </button>
             }
 
@@ -39,7 +40,7 @@
             @foreach (var chord in _mainChords)
             {
                 <button class="btn @(chord.Available ? "btn-primary" : "btn-danger")" @onclick="() => GetAvailableChords(chord)">
-                    @chord.RootNote @chord.Quality @(chord.Extension != ChordExtension.None ? chord.Extension : string.Empty)
+                    @chord.RootNote.GetDescription()@chord.Quality.GetDescription()@chord.Extension.GetDescription()
                 </button>
             }
 
@@ -53,8 +54,7 @@
         {
             @foreach (var chord in _modalChangeChords)
             {
-                <button class="btn @(chord.Available ? "btn-primary" : "btn-danger")" @onclick="() => GetAvailableChords(chord)">
-                    @chord.RootNote @chord.Quality @(chord.Extension != ChordExtension.None ? chord.Extension : string.Empty)
+                <button class="btn @(chord.Available ? "btn-primary" : "btn-danger")" @onclick="() => GetAvailableChords(chord)">@chord.RootNote.GetDescription()@chord.Quality.GetDescription()@chord.Extension.GetDescription()
                 </button>
             }
 

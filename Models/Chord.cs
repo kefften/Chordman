@@ -1,4 +1,6 @@
-﻿namespace ChordMan.Models;
+﻿using System.ComponentModel;
+
+namespace ChordMan.Models;
 
 public class Chord
 {
@@ -13,23 +15,38 @@ public class Chord
 
 public enum ChromaticScale
 {
+    [Description("C")]
     C = 0,
+    [Description("C#")]
     CSharp = 1,
+    [Description("D")]
     D = 2,
+    [Description("D#")]
     DSharp = 3,
+    [Description("E")]
     E = 4,
+    [Description("F")]
     F = 5,
+    [Description("F#")]
     FSharp = 6,
+    [Description("G")]
     G = 7,
+    [Description("G#")]
     GSharp = 8,
+    [Description("A")]
     A = 9,
+    [Description("A#")]
     ASharp = 10,
+    [Description("B")]
     B = 11
 }
 public enum ChordQuality
 {
+    [Description("")]
     Major = 0,
+    [Description("m")]
     Minor = 1,
+    [Description("dim")]
     Diminished = 2,
 }
 public enum ChordInterval
@@ -44,15 +61,24 @@ public enum ChordInterval
 }
 public enum ChordExtension
 {
-    None = 0,     // No extension
-    Seventh = 7,  // Dominant 7th (C7)
-    MajorSeventh = 107, // Major 7th (Cmaj7)
-    Ninth = 9,    // C9
-    Eleventh = 11,// C11
-    Thirteenth = 13, // C13
-    Add9 = 109,   // Cadd9 (Distinct from C9)
-    Add11 = 111,  // Cadd11
-    Add13 = 113   // Cadd13
+    [Description("")]
+    None = 0,
+    [Description("7")]
+    Seventh = 7,
+    [Description("maj7")]
+    MajorSeventh = 107,
+    [Description("9")]
+    Ninth = 9,   
+    [Description("11")]
+    Eleventh = 11,
+    [Description("13")]
+    Thirteenth = 13,
+    [Description("add9")]
+    Add9 = 109,   
+    [Description("add11")]
+    Add11 = 111,
+    [Description("add13")]
+    Add13 = 113
 }
 
 
@@ -65,97 +91,11 @@ public enum ChordFunction
 
 public static class Orders
 {
-    // public static Dictionary<ChordFunction, List<Chord>> AllChords = new()
-    // {
-    //     { ChordFunction.Main, new List<Chord> 
-    //         { 
-    //             new Chord()
-    //             {
-    //                 Function = ChordFunction.Main,
-    //                 Interval = ChordIntervals.I,
-    //             },
-    //             new Chord()                
-    //             {
-    //                 Function = ChordFunction.Main,
-    //                 Interval = ChordIntervals.II,
-    //             },
-    //             new Chord()                
-    //             {
-    //                 Function = ChordFunction.Main,
-    //                 Interval = ChordIntervals.III,
-    //             },
-    //             new Chord()                
-    //             {
-    //                 Function = ChordFunction.Main,
-    //                 Interval = ChordIntervals.IV,
-    //             },
-    //             new Chord()                
-    //             {
-    //                 Function = ChordFunction.Main,
-    //                 Interval = ChordIntervals.V,
-    //             },
-    //             new Chord(                
-    //             {
-    //                 Function = ChordFunction.Main,
-    //                 Interval = ChordIntervals.VI,
-    //             },
-    //             new Chord(                
-    //             {
-    //                 Function = ChordFunction.Main,
-    //                 Interval = ChordIntervals.VII,
-    //             },
-    //         }
-    //     },
-    //     { ChordFunction.ModalChange, new List<Chord> 
-    //         { 
-    //             new Chord()
-    //             {
-    //                 Function = ChordFunction.ModalChange,
-    //                 Interval = ChordIntervals.III,
-    //                 ChordQuality = ChordQuality.Major
-    //             },
-    //             new Chord()
-    //             {
-    //                 Function = ChordFunction.ModalChange,
-    //                 Interval = ChordIntervals.IV,
-    //                 ChordQuality = ChordQuality.Minor
-    //             },
-    //             new Chord()
-    //             {
-    //                 Function = ChordFunction.ModalChange,
-    //                 Interval = ChordIntervals.VI,
-    //                 ChordQuality = ChordQuality.Major
-    //             },
-    //             new Chord()
-    //             {
-    //                 Function = ChordFunction.ModalChange,
-    //                 Interval = ChordIntervals.VII,
-    //                 ChordQuality = ChordQuality.Major
-    //             },
-    //         }
-    //     },
-    //     { ChordFunction.Subdominant, new List<Chord> 
-    //         { 
-    //             new Chord()
-    //             {
-    //                 Function = ChordFunction.Subdominant,
-    //                 Interval = ChordIntervals.I + 4,
-    //             },
-    //             new Chord(),
-    //             new Chord(),
-    //             new Chord(),
-    //             new Chord(),
-    //             new Chord()
-    //         }
-    //     }
-    // };
-
-
-    public static readonly int[] StepOrder =
+    public static readonly int[] MajorStepOrder =
     [
         2,2,1,2,2,2,1
     ];
-    public static readonly ChordQuality[] MajorQuality =
+    public static readonly ChordQuality[] MajorQualityOrder =
     [
         ChordQuality.Major , 
         ChordQuality.Minor, 
